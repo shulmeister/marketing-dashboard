@@ -5,15 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import MDBox from './MDBox'
 import MDTypography from './MDTypography'
-import { 
-  Drawer, 
-  List, 
-  ListItem, 
-  ListItemIcon, 
-  ListItemText,
-  ListItemButton,
-  Divider
-} from '@mui/material'
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, ListItemButton, Divider } from '@mui/material'
 import { useTheme, alpha } from '@mui/material/styles'
 
 const navigation = [
@@ -23,7 +15,7 @@ const navigation = [
   { name: 'Mailchimp', href: '/mailchimp', icon: Mail },
   { name: 'Analytics', href: '/analytics', icon: Users },
   { name: 'Settings', href: '/settings', icon: Settings },
-];
+]
 
 export default function Sidebar() {
   const pathname = usePathname()
@@ -37,6 +29,7 @@ export default function Sidebar() {
         '& .MuiDrawer-paper': {
           width: 240,
           boxSizing: 'border-box',
+          borderRight: `1px solid ${theme.palette.divider}`,
         },
       }}
     >
@@ -48,8 +41,8 @@ export default function Sidebar() {
       <Divider />
       <List component="nav" sx={{ px: 2 }}>
         {navigation.map((item) => {
-          const isActive = pathname === item.href;
-          const IconComponent = item.icon;
+          const isActive = pathname === item.href
+          const IconComponent = item.icon
           return (
             <ListItem key={item.name} disablePadding>
               <Link href={item.href} style={{ width: '100%', textDecoration: 'none' }}>
@@ -59,27 +52,23 @@ export default function Sidebar() {
                     mb: 0.5,
                     color: isActive ? theme.palette.primary.main : theme.palette.text.secondary,
                     backgroundColor: isActive ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
+                    '&:hover': {
+                      backgroundColor: isActive 
+                        ? alpha(theme.palette.primary.main, 0.2) 
+                        : alpha(theme.palette.primary.main, 0.05),
+                    },
                   }}
                 >
-                  <ListItemIcon sx={{
-                    minWidth: 40,
-                    color: isActive ? theme.palette.primary.main : theme.palette.text.secondary
-                  }}>
+                  <ListItemIcon sx={{ minWidth: 40, color: isActive ? theme.palette.primary.main : theme.palette.text.secondary }}>
                     <IconComponent size={20} />
                   </ListItemIcon>
-                  <ListItemText 
-                    primary={item.name}
-                    primaryTypographyProps={{
-                      fontSize: '0.9rem',
-                      fontWeight: isActive ? 600 : 400
-                    }}
-                  />
+                  <ListItemText primary={item.name} primaryTypographyProps={{ fontSize: '0.9rem', fontWeight: isActive ? 600 : 400 }} />
                 </ListItemButton>
               </Link>
             </ListItem>
-          );
+          )
         })}
       </List>
     </Drawer>
-  );
+  )
 }

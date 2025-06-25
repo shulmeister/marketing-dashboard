@@ -11,7 +11,7 @@ export default function MetricCard({
   value, 
   change, 
   changeType, 
-  icon,
+  icon: Icon, 
   loading = false 
 }) {
   const theme = useTheme()
@@ -19,8 +19,9 @@ export default function MetricCard({
     positive: theme.palette.success.main,
     negative: theme.palette.error.main,
     neutral: theme.palette.text.secondary
-  }[changeType];
-  const ChangeIcon = changeType === 'positive' ? TrendingUp : changeType === 'negative' ? TrendingDown : null;
+  }[changeType]
+  const ChangeIcon = changeType === 'positive' ? TrendingUp : changeType === 'negative' ? TrendingDown : null 
+  
   if (loading) {
     return (
       <Card elevation={0} sx={{ border: `1px solid ${theme.palette.divider}` }}>
@@ -33,8 +34,9 @@ export default function MetricCard({
           <Skeleton variant="text" width={80} height={20} />
         </CardContent>
       </Card>
-    );
+    )
   }
+  
   return (
     <Card elevation={0} sx={{ border: `1px solid ${theme.palette.divider}` }}>
       <CardContent>
@@ -42,11 +44,13 @@ export default function MetricCard({
           <MDTypography variant="body2" color="textSecondary" fontWeight="medium">
             {title}
           </MDTypography>
-          {icon && icon}
+          <Icon size={20} color={theme.palette.text.secondary} />
         </MDBox>
+        
         <MDTypography variant="h4" fontWeight="bold" mb={0.5}>
           {value}
         </MDTypography>
+        
         <MDBox display="flex" alignItems="center">
           {ChangeIcon && (
             <ChangeIcon size={16} color={changeColor} style={{ marginRight: 4 }} />
@@ -57,5 +61,5 @@ export default function MetricCard({
         </MDBox>
       </CardContent>
     </Card>
-  );
+  )
 }

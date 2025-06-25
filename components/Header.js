@@ -12,9 +12,11 @@ export default function Header() {
   const theme = useTheme()
   const controller = useMaterialUIController()
   const { darkMode } = controller.state
+  
   const toggleColorMode = () => {
     controller.dispatch({ type: "DARKMODE", value: !darkMode })
   }
+  
   return (
     <AppBar 
       position="static" 
@@ -43,7 +45,9 @@ export default function Header() {
               ml: 2,
               flex: 1,
               py: 1,
-              '& .MuiInputBase-input': {}
+              '& .MuiInputBase-input': {
+                color: theme.palette.text.primary,
+              }
             }}
           />
         </MDBox>

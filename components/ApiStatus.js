@@ -61,15 +61,15 @@ export default function ApiStatus() {
   const getStatusColor = (status) => {
     switch (status) {
       case 'connected':
-        return theme.palette.success.main
+        return theme.palette.success.main;
       case 'partial':
-        return theme.palette.warning.main
+        return theme.palette.warning.main;
       case 'error':
-        return theme.palette.error.main
+        return theme.palette.error.main;
       case 'loading':
-        return theme.palette.info.main
+        return theme.palette.info.main;
       default:
-        return theme.palette.grey[500]
+        return theme.palette.grey[500];
     }
   }
 
