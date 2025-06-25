@@ -64,48 +64,33 @@ export default function ApiStatus() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'connected':
-        return theme.palette.success.main;
-      case 'partial':
-        return theme.palette.warning.main;
-      case 'error':
-        return theme.palette.error.main;
-      case 'loading':
-        return theme.palette.info.main;
-      default:
-        return theme.palette.grey[500];
+      case 'connected' theme.palette.success
+      case 'partial' theme.palette.warning
+      case 'error' theme.palette.error
+      case 'loading' theme.palette.info
+      default theme.palette.grey
     }
-  };
+  }
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'connected':
-        return <CheckCircle size={16} />;
-      case 'partial':
-        return <AlertTriangle size={16} />;
-      case 'error':
-        return <AlertCircle size={16} />;
-      case 'loading':
-        return <Clock size={16} />;
-      default:
-        return null;
+      case 'connected' <CheckCircle size={16} />
+      case 'partial' <AlertTriangle size={16} />
+      case 'error' <AlertCircle size={16} />
+      case 'loading' <Clock size={16} />
+      default null
     }
   }
 
   const getStatusText = (status) => {
     switch (status) {
-      case 'connected':
-        return 'Connected';
-      case 'partial':
-        return 'Partial Access';
-      case 'error':
-        return 'Error';
-      case 'loading':
-        return 'Checking...';
-      default:
-        return 'Unknown';
+      case 'connected' 'Connected'
+      case 'partial' 'Partial Access'
+      case 'error' 'Error'
+      case 'loading' 'Checking...'
+      default 'Unknown'
     }
-  };
+  }
 
   return (
     <Card elevation={0} sx={{ border: `1px solid ${theme.palette.divider}` }}>
@@ -116,132 +101,137 @@ export default function ApiStatus() {
           </MDTypography>
         }
       />
-      <List disablePadding>
-        {/* Mailchimp API Status */}
-        <ListItem 
-          sx={{ 
-            mb: 1, 
-            p: 2, 
-            borderRadius: 2, 
-            border: `1px solid ${getStatusColor(apiStatus.mailchimp.status) + '20'}`,
-            bgcolor: getStatusColor(apiStatus.mailchimp.status) + '10'
-          }}
-        >
-          <MDBox display="flex" alignItems="center" flexGrow={1}>
-            <Box
-              sx={{
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                bgcolor: getStatusColor(apiStatus.mailchimp.status),
-                mr: 1.5
-              }}
-            />
-            <MDTypography variant="body2" fontWeight="medium">
-              Mailchimp API
-            </MDTypography>
-          </MDBox>
-          <Chip
-            size="small"
-            icon={apiStatus.mailchimp.status === 'loading' 
-              ? <CircularProgress size={12} color="inherit" /> 
-              : getStatusIcon(apiStatus.mailchimp.status)
-            }
-            label={getStatusText(apiStatus.mailchimp.status)}
+      
+      
+        <List disablePadding>
+          {/* Mailchimp API Status */}
+          <ListItem 
             sx={{ 
-              color: getStatusColor(apiStatus.mailchimp.status),
-              bgcolor: getStatusColor(apiStatus.mailchimp.status) + '20' 
+              mb: 1, 
+              p: 2, 
+              borderRadius: 2, 
+              border: `1px solid ${getStatusColor(apiStatus.mailchimp.status).main}20`,
+              bgcolor: `${getStatusColor(apiStatus.mailchimp.status).main}10`
             }}
-          />
-        </ListItem>
-        {/* Facebook API Status */}
-        <ListItem 
-          sx={{ 
-            mb: 1, 
-            p: 2, 
-            borderRadius: 2, 
-            border: `1px solid ${getStatusColor(apiStatus.facebook.status) + '20'}`,
-            bgcolor: getStatusColor(apiStatus.facebook.status) + '10'
-          }}
-        >
-          <MDBox display="flex" alignItems="center" flexGrow={1}>
-            <Box
-              sx={{
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                bgcolor: getStatusColor(apiStatus.facebook.status),
-                mr: 1.5
-              }}
-            />
-            <MDTypography variant="body2" fontWeight="medium">
-              Facebook Ads API
-            </MDTypography>
-          </MDBox>
-          
-          <MDBox textAlign="right">
+          >
+            <MDBox display="flex" alignItems="center" flexGrow={1}>
+              <Box
+                sx={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: '50%',
+                  bgcolor(apiStatus.mailchimp.status).main,
+                  mr: 1.5
+                }}
+              />
+              <MDTypography variant="body2" fontWeight="medium">
+                Mailchimp API
+              </MDTypography>
+            </MDBox>
+            
             <Chip
               size="small"
-              icon={apiStatus.facebook.status === 'loading' 
+              icon={apiStatus.mailchimp.status === 'loading' 
                 ? <CircularProgress size={12} color="inherit" /> 
-                : getStatusIcon(apiStatus.facebook.status)
+                (apiStatus.mailchimp.status) || undefined
               }
-              label={getStatusText(apiStatus.facebook.status)}
+              label={getStatusText(apiStatus.mailchimp.status)}
               sx={{ 
-                color: getStatusColor(apiStatus.facebook.status),
-                bgcolor: getStatusColor(apiStatus.facebook.status) + '20' 
+                color(apiStatus.mailchimp.status).main,
+                bgcolor: `${getStatusColor(apiStatus.mailchimp.status).main}20` 
               }}
             />
-            
-            {apiStatus.facebook.message && (
-              <MDTypography 
-                variant="caption" 
-                display="block" 
-                sx={{ 
-                  mt: 0.5, 
-                  color: getStatusColor(apiStatus.facebook.status) 
-                }}
-              >
-                {apiStatus.facebook.message}
-              </MDTypography>
-            )}
-          </MDBox>
-        </ListItem>
-        
-        {/* Google Ads API Status - Coming Soon */}
-        <ListItem 
-          sx={{ 
-            p: 2, 
-            borderRadius: 2, 
-            border: `1px solid ${theme.palette.divider}`,
-            bgcolor: theme.palette.action.hover
-          }}
-        >
-          <MDBox display="flex" alignItems="center" flexGrow={1}>
-            <Box
-              sx={{
-                width: 10,
-                height: 10,
-                borderRadius: '50%',
-                bgcolor: theme.palette.grey[500],
-                mr: 1.5
-              }}
-            />
-            <MDTypography variant="body2" fontWeight="medium">
-              Google Ads API
-            </MDTypography>
-          </MDBox>
+          </ListItem>
           
-          <Chip
-            size="small"
-            label="Coming Soon"
+          {/* Facebook API Status */}
+          <ListItem 
             sx={{ 
-              color: theme.palette.text.secondary,
-              bgcolor: theme.palette.action.selected
+              mb: 1, 
+              p: 2, 
+              borderRadius: 2, 
+              border: `1px solid ${getStatusColor(apiStatus.facebook.status).main}20`,
+              bgcolor: `${getStatusColor(apiStatus.facebook.status).main}10`
             }}
-          />
-        </ListItem>
-      </List>
+          >
+            <MDBox display="flex" alignItems="center" flexGrow={1}>
+              <Box
+                sx={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: '50%',
+                  bgcolor(apiStatus.facebook.status).main,
+                  mr: 1.5
+                }}
+              />
+              <MDTypography variant="body2" fontWeight="medium">
+                Facebook Ads API
+              </MDTypography>
+            </MDBox>
+            
+            <MDBox textAlign="right">
+              <Chip
+                size="small"
+                icon={apiStatus.facebook.status === 'loading' 
+                  ? <CircularProgress size={12} color="inherit" /> 
+                  (apiStatus.facebook.status) || undefined
+                }
+                label={getStatusText(apiStatus.facebook.status)}
+                sx={{ 
+                  color(apiStatus.facebook.status).main,
+                  bgcolor: `${getStatusColor(apiStatus.facebook.status).main}20` 
+                }}
+              />
+              
+              {apiStatus.facebook.message && (
+                <MDTypography 
+                  variant="caption" 
+                  display="block" 
+                  sx={{ 
+                    mt: 0.5, 
+                    color(apiStatus.facebook.status).main 
+                  }}
+                >
+                  {apiStatus.facebook.message}
+                </MDTypography>
+              )}
+            </MDBox>
+          </ListItem>
+          
+          {/* Google Ads API Status - Coming Soon */}
+          <ListItem 
+            sx={{ 
+              p: 2, 
+              borderRadius: 2, 
+              border: `1px solid ${theme.palette.divider}`,
+              bgcolor.palette.action.hover
+            }}
+          >
+            <MDBox display="flex" alignItems="center" flexGrow={1}>
+              <Box
+                sx={{
+                  width: 10,
+                  height: 10,
+                  borderRadius: '50%',
+                  bgcolor.palette.grey[500],
+                  mr: 1.5
+                }}
+              />
+              <MDTypography variant="body2" fontWeight="medium">
+                Google Ads API
+              </MDTypography>
+            </MDBox>
+            
+            <Chip
+              size="small"
+              label="Coming Soon"
+              sx={{ 
+                color.palette.text.secondary,
+                bgcolor.palette.action.selected
+              }}
+            />
+          </ListItem>
+        </List>
+      </CardContent>
     </Card>
   )
 }
