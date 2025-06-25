@@ -16,12 +16,10 @@ import {
 import { useTheme } from '@mui/material/styles'
 import { CheckCircle, AlertCircle, Clock, AlertTriangle } from 'lucide-react'
 
-
-
 export default function ApiStatus() {
   const [apiStatus, setApiStatus] = useState({
-    mailchimp,
-    facebook
+    mailchimp: { status: 'loading' },
+    facebook: { status: 'loading' }
   })
   const theme = useTheme()
 
@@ -31,64 +29,77 @@ export default function ApiStatus() {
       try {
         const mailchimpResponse = await fetch('/api/mailchimp')
         if (mailchimpResponse.ok) {
-          setApiStatus(prev => ({ ...prev, mailchimp }))
+          setApiStatus(prev => ({ ...prev, mailchimp: { status: 'connected' } }))
         } else {
-          setApiStatus(prev => ({ ...prev, mailchimp }))
+          setApiStatus(prev => ({ ...prev, mailchimp: { status: 'error', message: 'Failed to connect' } }))
         }
       } catch (error) {
-        setApiStatus(prev => ({ ...prev, mailchimp }))
+        setApiStatus(prev => ({ ...prev, mailchimp: { status: 'error', message: 'Connection failed' } }))
       }
 
       // Check Facebook status
       try {
         const facebookResponse = await fetch('/api/facebook')
         const facebookData = await facebookResponse.json()
-        
         if (facebookResponse.ok) {
-          setApiStatus(prev => ({ ...prev, facebook }))
+          setApiStatus(prev => ({ ...prev, facebook: { status: 'connected' } }))
         } else if (facebookData.status === 'partial_access') {
           setApiStatus(prev => ({ 
             ...prev, 
-            facebook 
+            facebook: { status: 'partial', message: 'Missing ads_read permission. Add Marketing API to your Facebook app.' }
           }))
         } else {
-          setApiStatus(prev => ({ ...prev, facebook }))
+          setApiStatus(prev => ({ ...prev, facebook: { status: 'error', message: facebookData.error || 'Failed to connect' } }))
         }
       } catch (error) {
-        setApiStatus(prev => ({ ...prev, facebook }))
+        setApiStatus(prev => ({ ...prev, facebook: { status: 'error', message: 'Connection failed' } }))
       }
     }
-
     checkApiStatus()
   }, [])
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'connected' theme.palette.success
-      case 'partial' theme.palette.warning
-      case 'error' theme.palette.error
-      case 'loading' theme.palette.info
-      default theme.palette.grey
+      case 'connected':
+        return theme.palette.success.main
+      case 'partial':
+        return theme.palette.warning.main
+      case 'error':
+        return theme.palette.error.main
+      case 'loading':
+        return theme.palette.info.main
+      default:
+        return theme.palette.grey[500]
     }
   }
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'connected' <CheckCircle size={16} />
-      case 'partial' <AlertTriangle size={16} />
-      case 'error' <AlertCircle size={16} />
-      case 'loading' <Clock size={16} />
-      default null
+      case 'connected':
+        return <CheckCircle size={16} />
+      case 'partial':
+        return <AlertTriangle size={16} />
+      case 'error':
+        return <AlertCircle size={16} />
+      case 'loading':
+        return <Clock size={16} />
+      default:
+        return null
     }
   }
 
   const getStatusText = (status) => {
     switch (status) {
-      case 'connected' 'Connected'
-      case 'partial' 'Partial Access'
-      case 'error' 'Error'
-      case 'loading' 'Checking...'
-      default 'Unknown'
+      case 'connected':
+        return 'Connected'
+      case 'partial':
+        return 'Partial Access'
+      case 'error':
+        return 'Error'
+      case 'loading':
+        return 'Checking...'
+      default:
+        return 'Unknown'
     }
   }
 
@@ -101,8 +112,7 @@ export default function ApiStatus() {
           </MDTypography>
         }
       />
-      
-      
+      <CardContent>
         <List disablePadding>
           {/* Mailchimp API Status */}
           <ListItem 
@@ -110,8 +120,8 @@ export default function ApiStatus() {
               mb: 1, 
               p: 2, 
               borderRadius: 2, 
-              border: `1px solid ${getStatusColor(apiStatus.mailchimp.status).main}20`,
-              bgcolor: `${getStatusColor(apiStatus.mailchimp.status).main}10`
+              border: `1px solid ${getStatusColor(apiStatus.mailchimp.status)}20`,
+              bgcolor: `${getStatusColor(apiStatus.mailchimp.status)}10`
             }}
           >
             <MDBox display="flex" alignItems="center" flexGrow={1}>
@@ -120,7 +130,7 @@ export default function ApiStatus() {
                   width: 10,
                   height: 10,
                   borderRadius: '50%',
-                  bgcolor(apiStatus.mailchimp.status).main,
+                  bgcolor: getStatusColor(apiStatus.mailchimp.status),
                   mr: 1.5
                 }}
               />
@@ -128,29 +138,27 @@ export default function ApiStatus() {
                 Mailchimp API
               </MDTypography>
             </MDBox>
-            
             <Chip
               size="small"
               icon={apiStatus.mailchimp.status === 'loading' 
                 ? <CircularProgress size={12} color="inherit" /> 
-                (apiStatus.mailchimp.status) || undefined
+                : getStatusIcon(apiStatus.mailchimp.status)
               }
               label={getStatusText(apiStatus.mailchimp.status)}
               sx={{ 
-                color(apiStatus.mailchimp.status).main,
-                bgcolor: `${getStatusColor(apiStatus.mailchimp.status).main}20` 
+                color: getStatusColor(apiStatus.mailchimp.status),
+                bgcolor: `${getStatusColor(apiStatus.mailchimp.status)}20` 
               }}
             />
           </ListItem>
-          
           {/* Facebook API Status */}
           <ListItem 
             sx={{ 
               mb: 1, 
               p: 2, 
               borderRadius: 2, 
-              border: `1px solid ${getStatusColor(apiStatus.facebook.status).main}20`,
-              bgcolor: `${getStatusColor(apiStatus.facebook.status).main}10`
+              border: `1px solid ${getStatusColor(apiStatus.facebook.status)}20`,
+              bgcolor: `${getStatusColor(apiStatus.facebook.status)}10`
             }}
           >
             <MDBox display="flex" alignItems="center" flexGrow={1}>
@@ -159,7 +167,7 @@ export default function ApiStatus() {
                   width: 10,
                   height: 10,
                   borderRadius: '50%',
-                  bgcolor(apiStatus.facebook.status).main,
+                  bgcolor: getStatusColor(apiStatus.facebook.status),
                   mr: 1.5
                 }}
               />
@@ -167,28 +175,26 @@ export default function ApiStatus() {
                 Facebook Ads API
               </MDTypography>
             </MDBox>
-            
             <MDBox textAlign="right">
               <Chip
                 size="small"
                 icon={apiStatus.facebook.status === 'loading' 
                   ? <CircularProgress size={12} color="inherit" /> 
-                  (apiStatus.facebook.status) || undefined
+                  : getStatusIcon(apiStatus.facebook.status)
                 }
                 label={getStatusText(apiStatus.facebook.status)}
                 sx={{ 
-                  color(apiStatus.facebook.status).main,
-                  bgcolor: `${getStatusColor(apiStatus.facebook.status).main}20` 
+                  color: getStatusColor(apiStatus.facebook.status),
+                  bgcolor: `${getStatusColor(apiStatus.facebook.status)}20` 
                 }}
               />
-              
               {apiStatus.facebook.message && (
                 <MDTypography 
                   variant="caption" 
                   display="block" 
                   sx={{ 
                     mt: 0.5, 
-                    color(apiStatus.facebook.status).main 
+                    color: getStatusColor(apiStatus.facebook.status) 
                   }}
                 >
                   {apiStatus.facebook.message}
@@ -196,14 +202,13 @@ export default function ApiStatus() {
               )}
             </MDBox>
           </ListItem>
-          
           {/* Google Ads API Status - Coming Soon */}
           <ListItem 
             sx={{ 
               p: 2, 
               borderRadius: 2, 
               border: `1px solid ${theme.palette.divider}`,
-              bgcolor.palette.action.hover
+              bgcolor: theme.palette.action.hover
             }}
           >
             <MDBox display="flex" alignItems="center" flexGrow={1}>
@@ -212,7 +217,7 @@ export default function ApiStatus() {
                   width: 10,
                   height: 10,
                   borderRadius: '50%',
-                  bgcolor.palette.grey[500],
+                  bgcolor: theme.palette.grey[500],
                   mr: 1.5
                 }}
               />
@@ -220,13 +225,12 @@ export default function ApiStatus() {
                 Google Ads API
               </MDTypography>
             </MDBox>
-            
             <Chip
               size="small"
               label="Coming Soon"
               sx={{ 
-                color.palette.text.secondary,
-                bgcolor.palette.action.selected
+                color: theme.palette.text.secondary,
+                bgcolor: theme.palette.action.selected
               }}
             />
           </ListItem>
