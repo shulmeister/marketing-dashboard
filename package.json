@@ -4,9 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "vercel-build": "npm install @mui/material @mui/icons-material @emotion/react @emotion/styled --legacy-peer-deps && node scripts/convert-tsx-to-js.js && next build",
-    "prebuild": "node scripts/convert-tsx-to-js.js",
-    "build": "node scripts/convert-tsx-to-js.js && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
