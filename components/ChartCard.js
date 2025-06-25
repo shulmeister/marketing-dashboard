@@ -18,11 +18,11 @@ export default function ChartCard({
   
   // Custom colors for charts based on the theme
   const colors = {
-    spend.palette.primary.main,
-    revenue.palette.success.main,
-    roas.palette.warning.main,
-    impressions.palette.info.main,
-    clicks.palette.secondary.main
+    spend: theme.palette.primary.main,
+    revenue: theme.palette.success.main,
+    roas: theme.palette.warning.main,
+    impressions: theme.palette.info.main,
+    clicks: theme.palette.secondary.main
   }
   
   const pieColors = [
@@ -37,30 +37,31 @@ export default function ChartCard({
     return (
       <Card elevation={0} sx={{ border: `1px solid ${theme.palette.divider}` }}>
         <CardHeader title={<Skeleton variant="text" width={150} />} />
-        
+        <CardContent>
           <Skeleton variant="rectangular" height={300} />
         </CardContent>
       </Card>
-    )
+    );
   }
 
   const renderChart = () => {
     switch (chartType) {
-      case 'bar' (
-          <BarChart data={data}>
+      case 'bar':
+        return (
+          <BarChart data={data} height={300} width={500}>
             <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
             <XAxis 
               dataKey="name" 
-              axisLine={{ stroke.palette.divider }}
-              tick={{ fill.palette.text.secondary }}
+              axisLine={{ stroke: theme.palette.divider }}
+              tick={{ fill: theme.palette.text.secondary }}
             />
             <YAxis 
-              axisLine={{ stroke.palette.divider }}
-              tick={{ fill.palette.text.secondary }}
+              axisLine={{ stroke: theme.palette.divider }}
+              tick={{ fill: theme.palette.text.secondary }}
             />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor.palette.background.paper,
+                backgroundColor: theme.palette.background.paper,
                 border: `1px solid ${theme.palette.divider}`,
                 borderRadius: 8
               }} 
@@ -69,75 +70,53 @@ export default function ChartCard({
             <Bar dataKey="spend" fill={colors.spend} name="Spend" radius={[4, 4, 0, 0]} />
             <Bar dataKey="revenue" fill={colors.revenue} name="Revenue" radius={[4, 4, 0, 0]} />
           </BarChart>
-        )
-      case 'pie' (
-          
+        );
+      case 'pie':
+        return (
+          <PieChart width={500} height={300}>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
               labelLine={false}
               label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-              outerRadius={80}
+              outerRadius={100}
               fill={theme.palette.primary.main}
               dataKey="value"
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color || pieColors[index % pieColors.length]} />
+                <Cell key={`cell-${index}`} fill={pieColors[index % pieColors.length]} />
               ))}
             </Pie>
-            <Tooltip 
-              contentStyle={{ 
-                backgroundColor.palette.background.paper,
-                border: `1px solid ${theme.palette.divider}`,
-                borderRadius: 8
-              }}
-            />
+            <Tooltip />
           </PieChart>
-        )
-      default (
-          <LineChart data={data}>
+        );
+      case 'line':
+      default:
+        return (
+          <LineChart data={data} width={500} height={300}>
             <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
             <XAxis 
               dataKey="name" 
-              axisLine={{ stroke.palette.divider }}
-              tick={{ fill.palette.text.secondary }}
+              axisLine={{ stroke: theme.palette.divider }}
+              tick={{ fill: theme.palette.text.secondary }}
             />
             <YAxis 
-              axisLine={{ stroke.palette.divider }}
-              tick={{ fill.palette.text.secondary }}
+              axisLine={{ stroke: theme.palette.divider }}
+              tick={{ fill: theme.palette.text.secondary }}
             />
             <Tooltip 
               contentStyle={{ 
-                backgroundColor.palette.background.paper,
+                backgroundColor: theme.palette.background.paper,
                 border: `1px solid ${theme.palette.divider}`,
                 borderRadius: 8
               }} 
             />
             <Legend />
-            <Line 
-              type="monotone" 
-              dataKey="spend" 
-              stroke={colors.spend} 
-              activeDot={{ r: 6 }}
-              name="Spend" 
-            />
-            <Line 
-              type="monotone" 
-              dataKey="revenue" 
-              stroke={colors.revenue} 
-              activeDot={{ r: 6 }}
-              name="Revenue" 
-            />
-            <Line 
-              type="monotone" 
-              dataKey="roas" 
-              stroke={colors.roas} 
-              activeDot={{ r: 6 }}
-              name="ROAS" 
-            />
+            <Line type="monotone" dataKey="spend" stroke={colors.spend} name="Spend" strokeWidth={2} />
+            <Line type="monotone" dataKey="revenue" stroke={colors.revenue} name="Revenue" strokeWidth={2} />
           </LineChart>
-        )
+        );
     }
   }
 
@@ -150,7 +129,7 @@ export default function ChartCard({
           </MDTypography>
         }
       />
-      
+      <CardContent>
         <MDBox height={300}>
           <ResponsiveContainer width="100%" height="100%">
             {renderChart()}

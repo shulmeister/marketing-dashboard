@@ -17,12 +17,12 @@ import {
 import { useTheme, alpha } from '@mui/material/styles'
 
 const navigation = [
-  { name: 'Dashboard', href: '/', icon },
-  { name: 'Facebook Ads', href: '/facebook-ads', icon },
-  { name: 'Google Ads', href: '/google-ads', icon },
-  { name: 'Mailchimp', href: '/mailchimp', icon },
-  { name: 'Analytics', href: '/analytics', icon },
-  { name: 'Settings', href: '/settings', icon },
+  { name: 'Dashboard', href: '/', icon: Home },
+  { name: 'Facebook Ads', href: '/facebook-ads', icon: BarChart3 },
+  { name: 'Google Ads', href: '/google-ads', icon: MousePointer },
+  { name: 'Mailchimp', href: '/mailchimp', icon: Mail },
+  { name: 'Analytics', href: '/analytics', icon: Users },
+  { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
 export default function Sidebar() {
@@ -35,7 +35,11 @@ export default function Sidebar() {
       sx={{
         width: 240,
         flexShrink: 0,
-        '& .MuiDrawer-paper'`}}}
+        '& .MuiDrawer-paper': {
+          width: 240,
+          boxSizing: 'border-box',
+        },
+      }}
     >
       <MDBox p={3} display="flex" alignItems="center">
         <MDTypography variant="h5" fontWeight="bold">
@@ -57,14 +61,13 @@ export default function Sidebar() {
                   sx={{
                     borderRadius: 2,
                     mb: 0.5,
-                    color ? theme.palette.primary.main .palette.text.secondary,
-                    backgroundColor ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
-                    '&'
+                    color: isActive ? theme.palette.primary.main : theme.palette.text.secondary,
+                    backgroundColor: isActive ? alpha(theme.palette.primary.main, 0.1) : 'transparent',
                   }}
                 >
                   <ListItemIcon sx={{
                     minWidth: 40,
-                    color ? theme.palette.primary.main .palette.text.secondary
+                    color: isActive ? theme.palette.primary.main : theme.palette.text.secondary
                   }}>
                     <IconComponent size={20} />
                   </ListItemIcon>
@@ -72,7 +75,7 @@ export default function Sidebar() {
                     primary={item.name}
                     primaryTypographyProps={{
                       fontSize: '0.9rem',
-                      fontWeight ? 600 : 400
+                      fontWeight: isActive ? 600 : 400
                     }}
                   />
                 </ListItemButton>
