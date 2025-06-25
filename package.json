@@ -1,0 +1,40 @@
+{
+  "name": "marketing-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "vercel-build": "npm install @mui/material @mui/icons-material @emotion/react @emotion/styled --legacy-peer-deps && node scripts/convert-tsx-to-js.js && next build",
+    "prebuild": "node scripts/convert-tsx-to-js.js",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mailchimp/mailchimp_marketing": "^3.0.80",
+    "@mui/icons-material": "^5.15.0",
+    "@mui/material": "^5.15.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.16",
+    "axios": "^1.6.0",
+    "dotenv": "^16.5.0",
+    "lucide-react": "^0.292.0",
+    "next": "^15.3.4",
+    "postcss": "^8.4.31",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.8.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "eslint-config-next": "^15.3.4"
+  }
+}

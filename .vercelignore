@@ -1,0 +1,20 @@
+# Dependencies
+/node_modules
+
+# Local build artifacts
+/.next
+/out
+
+# Testing
+/coverage
+
+# Environment variables
+.env*.local
+.env
+
+# Misc
+.DS_Store
+*.pem
+.git
+.github
+README.md
