@@ -58,5 +58,5 @@ function useMaterialUIController() {
   return context;
 }
 
+export default MaterialUIControllerProvider;
 export { MaterialUIControllerProvider, useMaterialUIController };
-export default MaterialUI;
