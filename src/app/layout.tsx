@@ -2,7 +2,7 @@ import MaterialUIControllerProvider from '@/context/MaterialUIContext'
 import './globals.css'
 import type { ReactNode } from 'react'
 
-// Force redeploy - layout with corrected imports
+// Force redeploy - .babelrc removed, using SWC compiler
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
