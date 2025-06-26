@@ -44,7 +44,8 @@ function reducer(state, action) {
 
 const MaterialUI = createContext(null);
 
-function MaterialUIControllerProvider({ children }) {
+function MaterialUIControllerProvider(props) {
+  const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const value = { state, dispatch };
   return <MaterialUI.Provider value={value}>{children}</MaterialUI.Provider>;
