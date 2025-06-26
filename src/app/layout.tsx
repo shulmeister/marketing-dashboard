@@ -1,4 +1,4 @@
-import MaterialUIControllerProvider from '../context/MaterialUIContext'
+import MaterialUIControllerProvider from '@/context/MaterialUIContext'
 import './globals.css'
 import type { ReactNode } from 'react'
 
