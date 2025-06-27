@@ -20,9 +20,11 @@ export default function Dashboard() {
       emailSubscribers: mailchimp?.overview?.totalSubscribers || 0,
       conversionRate: analytics?.overview?.totalConversions && analytics?.overview?.totalSessions ? 
         (analytics.overview.totalConversions / analytics.overview.totalSessions * 100) : 3.2,
-      roas: realROAS > 0 ? realROAS : (quickbooks?.overview?.totalRevenue || analytics?.overview?.totalRevenue ? 
-        (quickbooks?.overview?.totalRevenue || analytics?.overview?.totalRevenue) / 
-        (facebook?.data?.overview?.spend ? parseFloat(facebook.data.overview.spend) : 1) : 4.5)
+      roas: realROAS > 0 ? realROAS : (() => {
+        const totalRevenue = quickbooks?.overview?.totalRevenue || analytics?.overview?.totalRevenue || 0;
+        const totalSpend = facebook?.data?.overview?.spend ? parseFloat(facebook.data.overview.spend) : 1;
+        return totalRevenue > 0 ? totalRevenue / totalSpend : 4.5;
+      })()
     },
     facebookAds: {
       spend: facebook?.data?.overview?.spend ? parseFloat(facebook.data.overview.spend) : 0,
