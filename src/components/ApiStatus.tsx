@@ -1,4 +1,5 @@
 'use client'
+// Fixed TypeScript display prop error - moved to sx prop
 
 import { useEffect, useState } from 'react'
 import MDBox from './MDBox'
