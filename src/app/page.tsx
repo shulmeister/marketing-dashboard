@@ -1,4 +1,5 @@
 'use client'
+// Force deployment with TypeScript fixes applied
 
 import DashboardLayout from '@/components/DashboardLayout'
 import MetricCard from '@/components/MetricCard'
