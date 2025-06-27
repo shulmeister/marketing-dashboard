@@ -191,8 +191,8 @@ export default function ApiStatus() {
               {apiStatus.facebook.message && (
                 <MDTypography 
                   variant="caption" 
-                  display="block" 
                   sx={{ 
+                    display: "block",
                     mt: 0.5, 
                     color: getStatusColor(apiStatus.facebook.status).main 
                   }}
