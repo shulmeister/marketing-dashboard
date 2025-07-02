@@ -5,7 +5,7 @@ import Sidebar from './Sidebar'
 import Header from './Header'
 import MDBox from './MDBox'
 import { useTheme } from '@mui/material/styles'
-import { useMaterialUIController } from '@/context/MaterialUIContext'
+import MaterialUIControllerProvider, { useMaterialUIController } from '@/context/MaterialUIContext'
 
 interface DashboardLayoutProps {
   children: ReactNode
