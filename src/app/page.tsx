@@ -1,5 +1,5 @@
 'use client'
-// Final deployment - all TypeScript errors fixed
+// Force deployment with MaterialUI import fixes applied
 
 import DashboardLayout from '@/components/DashboardLayout'
 import MetricCard from '@/components/MetricCard'
