@@ -5,7 +5,6 @@ import Sidebar from './Sidebar'
 import Header from './Header'
 import MDBox from './MDBox'
 import { useTheme } from '@mui/material/styles'
-import MaterialUIControllerProvider from '@/context/MaterialUIContext'
 import { useMaterialUIController } from '@/context/MaterialUIContext'
 
 interface DashboardLayoutProps {
