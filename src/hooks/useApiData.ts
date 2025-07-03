@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 interface UseFacebookDataOptions {
   dateRange?: string
@@ -19,7 +19,7 @@ export function useFacebookData(options: UseFacebookDataOptions = {}) {
   const [error, setError] = useState<string | null>(null)
   const [permissionError, setPermissionError] = useState<string | null>(null)
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -54,7 +54,7 @@ export function useFacebookData(options: UseFacebookDataOptions = {}) {
     } finally {
       setLoading(false)
     }
-  }
+  }, [dateRange])
 
   useEffect(() => {
     fetchData()
@@ -64,7 +64,7 @@ export function useFacebookData(options: UseFacebookDataOptions = {}) {
       const interval = setInterval(fetchData, refreshInterval)
       return () => clearInterval(interval)
     }
-  }, [dateRange, refreshInterval])
+  }, [fetchData, refreshInterval])
 
   return { data, loading, error, permissionError, refetch: fetchData }
 }
