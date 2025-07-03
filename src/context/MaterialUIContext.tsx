@@ -1,87 +1,118 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+"use client";
+
+import { createContext, useContext, useReducer, ReactNode } from "react";
+
+// Define types for the state and actions
+interface MaterialUIState {
+  miniSidenav: boolean;
+  transparentSidenav: boolean;
+  whiteSidenav: boolean;
+  sidenavColor: string;
+  transparentNavbar: boolean;
+  fixedNavbar: boolean;
+  openConfigurator: boolean;
+  direction: string;
+  layout: string;
+  darkMode: boolean;
+}
+
+type MaterialUIAction =
+  | { type: "MINI_SIDENAV"; value: boolean }
+  | { type: "TRANSPARENT_SIDENAV"; value: boolean }
+  | { type: "WHITE_SIDENAV"; value: boolean }
+  | { type: "SIDENAV_COLOR"; value: string }
+  | { type: "TRANSPARENT_NAVBAR"; value: boolean }
+  | { type: "FIXED_NAVBAR"; value: boolean }
+  | { type: "OPEN_CONFIGURATOR"; value: boolean }
+  | { type: "DIRECTION"; value: string }
+  | { type: "LAYOUT"; value: string }
+  | { type: "DARKMODE"; value: boolean };
 
 interface MaterialUIContextType {
-  mode: 'light' | 'dark';
-  toggleColorMode: () => void;
+  state: MaterialUIState;
+  dispatch: React.Dispatch<MaterialUIAction>;
 }
 
-const MaterialUIContext = createContext<MaterialUIContextType | undefined>(undefined);
+// Material Dashboard 2 React context
+const MaterialUI = createContext<MaterialUIContextType | null>(null);
 
-export const useMaterialUI = (): MaterialUIContextType => {
-  const context = useContext(MaterialUIContext);
-  if (!context) {
-    throw new Error('useMaterialUI must be used within a MaterialUIProvider');
+// Material Dashboard 2 React reducer
+function reducer(state: MaterialUIState, action: MaterialUIAction): MaterialUIState {
+  switch (action.type) {
+    case "MINI_SIDENAV": {
+      return { ...state, miniSidenav: action.value };
+    }
+    case "TRANSPARENT_SIDENAV": {
+      return { ...state, transparentSidenav: action.value };
+    }
+    case "WHITE_SIDENAV": {
+      return { ...state, whiteSidenav: action.value };
+    }
+    case "SIDENAV_COLOR": {
+      return { ...state, sidenavColor: action.value };
+    }
+    case "TRANSPARENT_NAVBAR": {
+      return { ...state, transparentNavbar: action.value };
+    }
+    case "FIXED_NAVBAR": {
+      return { ...state, fixedNavbar: action.value };
+    }
+    case "OPEN_CONFIGURATOR": {
+      return { ...state, openConfigurator: action.value };
+    }
+    case "DIRECTION": {
+      return { ...state, direction: action.value };
+    }
+    case "LAYOUT": {
+      return { ...state, layout: action.value };
+    }
+    case "DARKMODE": {
+      return { ...state, darkMode: action.value };
+    }
+    default: {
+      throw new Error(`Unhandled action type: ${(action as any).type}`);
+    }
   }
-  return context;
-};
-
-interface MaterialUIProviderProps {
-  children: React.ReactNode;
 }
 
-export const MaterialUIProvider: React.FC<MaterialUIProviderProps> = ({ children }) => {
-  const [mode, setMode] = useState<'light' | 'dark'>('light');
+// Material Dashboard 2 React context provider
+function MaterialUIControllerProvider({ children }: { children: ReactNode }) {
+  const initialState: MaterialUIState = {
+    miniSidenav: false,
+    transparentSidenav: false,
+    whiteSidenav: false,
+    sidenavColor: "info",
+    transparentNavbar: false,
+    fixedNavbar: false,
+    openConfigurator: false,
+    direction: "ltr",
+    layout: "dashboard",
+    darkMode: false,
+  };
 
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode,
-          primary: { main: '#1976d2' },
-          secondary: { main: '#9c27b0' },
-          background: {
-            default: mode === 'light' ? '#f4f6f8' : '#121212',
-            paper: mode === 'light' ? '#fff' : '#1e1e1e',
-          },
-        },
-        shape: { borderRadius: 12 },
-        typography: {
-          fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-          h1: {
-            fontWeight: 700,
-            fontSize: '2.5rem',
-          },
-          h2: {
-            fontWeight: 700,
-            fontSize: '2rem',
-          },
-          h3: {
-            fontWeight: 600,
-            fontSize: '1.5rem',
-          },
-          h4: {
-            fontWeight: 600,
-            fontSize: '1.25rem',
-          },
-          h5: {
-            fontWeight: 500,
-            fontSize: '1.1rem',
-          },
-          h6: {
-            fontWeight: 500,
-            fontSize: '1rem',
-          },
-          button: {
-            textTransform: 'none',
-            fontWeight: 500,
-          },
-        },
-      }),
-    [mode]
-  );
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const value = { state, dispatch };
 
-  const toggleColorMode = () => setMode((prev) => (prev === 'light' ? 'dark' : 'light'));
+  return <MaterialUI.Provider value={value}>{children}</MaterialUI.Provider>;
+}
 
-  return (
-    <MaterialUIContext.Provider value={{ mode, toggleColorMode }}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </MaterialUIContext.Provider>
-  );
+// Material Dashboard 2 React custom hook for using context
+function useMaterialUIController() {
+  const context = useContext(MaterialUI);
+
+  if (!context) {
+    throw new Error(
+      "useMaterialUIController should be used inside the MaterialUIControllerProvider."
+    );
+  }
+
+  return context;
+}
+
+// Context module exports
+export {
+  MaterialUIControllerProvider,
+  useMaterialUIController,
 };
 
-export default MaterialUIProvider;
+export default MaterialUIControllerProvider;
