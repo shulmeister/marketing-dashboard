@@ -17,7 +17,6 @@ const MDButton = forwardRef(({ color, variant, size, circular, iconOnly, childre
 
 // Add display name for ESLint
 MDButton.displayName = "MDButton";
-));
 
 // Setting default values for the props of MDButton
 MDButton.defaultProps = {
